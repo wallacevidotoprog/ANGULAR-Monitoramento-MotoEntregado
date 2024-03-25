@@ -1,38 +1,32 @@
 import { Component } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
+import { LoginService } from '../../service/login.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  title: string = 'LOGIN';
-  email = document.getElementById('email');
-  password = document.getElementById('password');
+  constructor(private loginService: LoginService) {}
 
-  async Login(): Promise<void> {
-    await fetch('http://localhost:3000/api/login', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user: email.value,
-        pass: password.value,
-      }),
+  vf = this.loginService.VerifyToken();
+  canLoadin: boolean = true;
+  dataUser = new UserLogin();
+  async Login(){
+    this.canLoadin=false;
+    this.loginService.Login(this.dataUser).then((dt)=>{
+      if(dt.err){
+        this.canLoadin=dt.err;
+        alert(dt.menssage)
+      }
     })
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        document.cookie = data.TK;
-        window.location.href = '/pages/home/home.html';
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
   }
+
+}
+export class UserLogin {
+  user!: string;
+  pass!: string;
 }
