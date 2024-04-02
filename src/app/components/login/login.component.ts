@@ -1,30 +1,57 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { LoginService } from '../../service/login.service';
+import { LoginService, RespAPI } from '../../service/login.service';
+import { Router } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { catchError, pipe, Subject, take, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, HttpClientModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
-  constructor(private loginService: LoginService) {}
-
-  vf = this.loginService.VerifyToken();
-  canLoadin: boolean = true;
-  dataUser = new UserLogin();
-  async Login(){
-    this.canLoadin=false;
-    this.loginService.Login(this.dataUser).then((dt)=>{
-      if(dt.err){
-        this.canLoadin=dt.err;
-        alert(dt.menssage)
-      }
-    })
-
+export class LoginComponent implements OnInit {
+  private unsubscribe = new Subject<void>();
+  ngOnInit(): void {
+    this.canLoadin = false;
+    this.loginService
+      .eVerifyToken()
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((res) => {
+        if (res.err) {
+          this.canLoadin = true;
+          return;
+        }
+        this.routerService.navigate(['home']);
+      },
+      (error)=>{
+        this.canLoadin = true;
+      });
   }
+  private routerService = inject(Router);
+  private loginService = inject(LoginService);
 
+  canLoadin: boolean = true;
+
+  dataUser = new UserLogin();
+
+  Login() {
+    this.canLoadin = false;
+    this.loginService
+      .eLogin(this.dataUser)
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe((res) => {
+        if (res.err) {
+          this.canLoadin = true;
+          return;
+        }
+        this.routerService.navigate(['home']);
+      },
+      (error)=>{
+        this.canLoadin = true;
+      });
+  }
 }
 export class UserLogin {
   user!: string;

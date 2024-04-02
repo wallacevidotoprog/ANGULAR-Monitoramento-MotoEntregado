@@ -1,47 +1,37 @@
-import { Injectable } from '@angular/core';
-import {UserLogin} from '../components/login/login.component'
+import { inject, Injectable } from '@angular/core';
+import { UserLogin } from '../components/login/login.component';
+import { Router } from '@angular/router';
+import { HttpClient, HttpHandler } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  constructor() {}
+  private routerService = inject(Router);
+  private api = inject(HttpClient);
 
-  async Login(dataUser:UserLogin): Promise<object|any> {
-    let obj!:object
-    await fetch('http://localhost:3000/api/login', {
-      method: 'POST',
-      headers: {
+  eLogin(dataUser: UserLogin){
+    return  this.api.post<RespAPI>('http://localhost:3000/api/login', dataUser,{
+      headers:{
         Accept: 'application/json',
         'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(dataUser),
-    }).then(async (res) => {
-      obj = (await res.json()) as object;
-    });
-    return obj;
+      },withCredentials:true
+    })
   }
 
-
-  async VerifyToken():Promise<boolean|any> {
-    let cot!:Boolean;
-    await fetch('http://localhost:3000/api/verifyAuth', {
-      method: 'POST',
-      headers: {
+  eVerifyToken():Observable<RespAPI>{
+    const cookie = this.getCookie('Authorization');
+    return this.api.get<RespAPI>('http://localhost:3000/api/verifyAuth',{
+      headers:{
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        authorization: this.getCookie('Authorization'),
-      },
-      credentials: 'include',
-    }).then(async (res) => {
-      const temp = await res.json();
-      cot = temp.err
-    }).catch((err)=>{cot = true;
-    });
-    return cot;
+        'authorization': cookie,
+      },withCredentials:true
+    })
   }
 
-  getCookie(cname: string): string {
+  public getCookie(cname: string) {
     const name = cname + '=';
     const decodedCookie = decodeURIComponent(document.cookie);
     const ca = decodedCookie.split(';');
@@ -56,4 +46,9 @@ export class LoginService {
     }
     return '';
   }
+}
+
+export interface  RespAPI{
+  err:boolean|any;
+  menssage:string|any;
 }

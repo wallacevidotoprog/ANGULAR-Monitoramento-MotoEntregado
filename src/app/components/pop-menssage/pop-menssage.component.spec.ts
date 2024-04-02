@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HomeAdminComponent } from './home-admin.component';
+import { PopMenssageComponent } from './pop-menssage.component';
 
-describe('HomeAdminComponent', () => {
-  let component: HomeAdminComponent;
-  let fixture: ComponentFixture<HomeAdminComponent>;
+describe('PopMenssageComponent', () => {
+  let component: PopMenssageComponent;
+  let fixture: ComponentFixture<PopMenssageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomeAdminComponent]
+      imports: [PopMenssageComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(HomeAdminComponent);
+    fixture = TestBed.createComponent(PopMenssageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

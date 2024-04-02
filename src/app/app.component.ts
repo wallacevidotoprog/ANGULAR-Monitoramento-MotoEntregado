@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { HttpClientModule} from '@angular/common/http';
 
 import { LoginComponent } from './components/login/login.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { CommonModule } from '@angular/common';
 import { PageNotFoundComponentComponent } from './components/page-not-found-component/page-not-found-component.component';
-//import { AppRoutingModule } from './app.routing.module';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,7 @@ import { PageNotFoundComponentComponent } from './components/page-not-found-comp
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   imports: [
-    //AppRoutingModule,
+    HttpClientModule,
     CommonModule,
     RouterOutlet,
     LoginComponent,
