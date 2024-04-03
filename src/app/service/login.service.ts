@@ -1,34 +1,36 @@
 import { inject, Injectable } from '@angular/core';
 import { UserLogin } from '../components/login/login.component';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClient, HttpHandler,HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  private routerService = inject(Router);
   private api = inject(HttpClient);
 
-  eLogin(dataUser: UserLogin){
-    return  this.api.post<RespAPI>('http://localhost:3000/api/login', dataUser,{
-      headers:{
+  eLogin(dataUser: UserLogin) {
+    return this.api.post<RespAPI>(`${environment.API}api/login`, dataUser, {
+      headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-      },withCredentials:true
-    })
+      },
+      withCredentials: true,
+    });
   }
 
-  eVerifyToken():Observable<RespAPI>{
-    const cookie = this.getCookie('Authorization');
-    return this.api.get<RespAPI>('http://localhost:3000/api/verifyAuth',{
-      headers:{
+  eVerifyToken(): Observable<RespAPI> {
+    return this.api.get<RespAPI>(`${environment.API}api/verifyAuth`, {
+
+      headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        'authorization': cookie,
-      },withCredentials:true
-    })
+      },
+
+      withCredentials: true,
+    });
   }
 
   public getCookie(cname: string) {
@@ -48,7 +50,7 @@ export class LoginService {
   }
 }
 
-export interface  RespAPI{
-  err:boolean|any;
-  menssage:string|any;
+export interface RespAPI {
+  err: boolean | any;
+  menssage: string | any;
 }

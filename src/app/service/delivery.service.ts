@@ -3,6 +3,7 @@ import { DeliveryData } from '../components/services/services.component';
 import { LoginService, RespAPI } from './login.service';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
@@ -30,7 +31,7 @@ export class DeliveryService {
   }
 
   add(dataDerivery: DeliveryData): Observable<RespAPI> {
-    return this.api.post<RespAPI>('http://localhost:3000/api/delivery/add',dataDerivery,{
+    return this.api.post<RespAPI>(`${environment.API}api/delivery/add`,dataDerivery,{
       headers:{'authorization': GlobalFunction.getCookie('Authorization'),}
     })
   }

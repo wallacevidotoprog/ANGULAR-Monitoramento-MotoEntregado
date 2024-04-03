@@ -7,9 +7,9 @@ import { AuthGuard } from './guards/auth-guard';
 import { ServicesComponent } from './components/services/services.component';
 
 export const routes: Routes = [
-  { path: '', component: LoginComponent, title: 'Login' },
+  { path: 'login', component: LoginComponent, title: 'login' },
   {
-    path: 'home',
+    path: '',
     component: HomepageComponent,
     title: 'Home Page',
     canActivate: [AuthGuard],

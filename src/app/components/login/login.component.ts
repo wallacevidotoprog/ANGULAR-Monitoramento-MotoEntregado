@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
           this.canLoadin = true;
           return;
         }
-        this.routerService.navigate(['home']);
+        this.routerService.navigate(['']);
       },
       (error)=>{
         this.canLoadin = true;
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
           this.canLoadin = true;
           return;
         }
-        this.routerService.navigate(['home']);
+        this.routerService.navigate(['']);
       },
       (error)=>{
         this.canLoadin = true;

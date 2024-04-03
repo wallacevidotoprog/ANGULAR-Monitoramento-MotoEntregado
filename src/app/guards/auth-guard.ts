@@ -8,8 +8,9 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { LoginService } from '../service/login.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,12 @@ import { LoginService } from '../service/login.service';
 class eAuthGuard {
   private auth = inject(LoginService);
   private routerService = inject(Router);
+
+  handleError(error: HttpErrorResponse) {
+    return throwError(() => {console.log(error);
+    });
+  }
+
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
@@ -25,12 +32,15 @@ class eAuthGuard {
     .eVerifyToken()
     .subscribe((res) => {
       if (res.err) {
-        return !res.err
+        this.routerService.navigate(['login'])
       }
       return !res.err
     },
     (error)=>{
-      return false
+
+
+      this.routerService.navigate(['login'])
+
     });
 
   }

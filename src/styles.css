@@ -19,7 +19,7 @@ app-login{
   align-items: center;
   justify-content: center;
 }
-app-homepage,app-home-admin{
+app-homepage,app-home-admin,app-page-not-found-component{
   width: 100vw;
   height: 100vh;
 }

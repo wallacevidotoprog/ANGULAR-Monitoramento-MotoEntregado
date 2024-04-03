@@ -15,10 +15,11 @@ import {
 } from '@angular/forms';
 import { DeliveryService } from '../../service/delivery.service';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule,RouterLink],
   templateUrl: './services.component.html',
   styleUrl: './services.component.css',
 })
@@ -53,8 +54,6 @@ export class ServicesComponent {
     deliveryData.km = this.deliveryForm.value.km;
     deliveryData.router = this.deliveryForm.value.router;
 
-    console.log(this.deliveryForm.value.isDerivery);
-
     switch (this.deliveryForm.value.isDerivery?.toString()) {
       case 'isRate':
         deliveryData.isRate = true;
@@ -73,10 +72,7 @@ export class ServicesComponent {
     this.apiDelivery.add(deliveryData).subscribe(
       (res) => {
         this.loading = false;
-        this.deliveryForm.value.date = '';
-        this.deliveryForm.value.value = '';
-        this.deliveryForm.value.router = '';
-        this.deliveryForm.value.isDerivery = '';
+        this.deliveryForm.reset();
         this.SendMsgAlert(
           new ALERT('Sucesso', 'Registro cadastrado com sucesso.'),
           0
