@@ -1,13 +1,28 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+    circle,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 .form_main {
   width: 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(222, 234, 248, 0.856);
   padding: 30px 30px 30px 30px;
   border-radius: 30px;
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.062);
+  z-index: 100;
 }
 
 .heading {
@@ -39,7 +54,7 @@
   border-radius: 30px;
   margin: 10px 0;
   color: black;
-  font-size: .8em;
+  font-size: 0.8em;
   font-weight: 500;
   box-sizing: border-box;
   padding-left: 30px;
@@ -63,7 +78,7 @@
   background-color: #8000ff;
   height: 40px;
   color: white;
-  font-size: .8em;
+  font-size: 0.8em;
   font-weight: 500;
   letter-spacing: 1px;
   border-radius: 30px;
@@ -83,12 +98,12 @@
   border-bottom-right-radius: 100px;
   border-top-left-radius: 100px;
   filter: blur(10px);
-  transition-duration: .5s;
+  transition-duration: 0.5s;
 }
 
 #button:hover::after {
   transform: translateX(600px);
-  transition-duration: .5s;
+  transition-duration: 0.5s;
 }
 
 .signupContainer {
@@ -101,13 +116,13 @@
 }
 
 .signupContainer p {
-  font-size: .9em;
+  font-size: 0.9em;
   font-weight: 500;
   color: black;
 }
 
 .signupContainer a {
-  font-size: .7em;
+  font-size: 0.7em;
   font-weight: 500;
   background-color: #2e2e2e;
   color: white;
@@ -142,7 +157,7 @@
 .pyramid-loader .wrapper .side {
   width: 70px;
   height: 70px;
-/* you can choose any gradient or color you want */
+  /* you can choose any gradient or color you want */
   /* background: radial-gradient( #2F2585 10%, #F028FD 70%, #2BDEAC 120%); */
   position: absolute;
   top: 0;
@@ -156,28 +171,28 @@
 
 .pyramid-loader .wrapper .side1 {
   transform: rotateZ(-30deg) rotateY(90deg);
-  background: conic-gradient( #2BDEAC, #F028FD, #D8CCE6, #2F2585);
+  background: conic-gradient(#2bdeac, #f028fd, #d8cce6, #2f2585);
 }
 
 .pyramid-loader .wrapper .side2 {
   transform: rotateZ(30deg) rotateY(90deg);
-  background: conic-gradient( #2F2585, #D8CCE6, #F028FD, #2BDEAC);
+  background: conic-gradient(#2f2585, #d8cce6, #f028fd, #2bdeac);
 }
 
 .pyramid-loader .wrapper .side3 {
   transform: rotateX(30deg);
-  background: conic-gradient( #2F2585, #D8CCE6, #F028FD, #2BDEAC);
+  background: conic-gradient(#2f2585, #d8cce6, #f028fd, #2bdeac);
 }
 
 .pyramid-loader .wrapper .side4 {
   transform: rotateX(-30deg);
-  background: conic-gradient( #2BDEAC, #F028FD, #D8CCE6, #2F2585);
+  background: conic-gradient(#2bdeac, #f028fd, #d8cce6, #2f2585);
 }
 
 .pyramid-loader .wrapper .shadow {
   width: 60px;
   height: 60px;
-  background: #8B5AD5;
+  background: #8b5ad5;
   position: absolute;
   top: 0;
   left: 0;

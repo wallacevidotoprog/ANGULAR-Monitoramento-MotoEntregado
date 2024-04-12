@@ -31,8 +31,12 @@ export class DeliveryService {
   }
 
   add(dataDerivery: DeliveryData): Observable<RespAPI> {
-    return this.api.post<RespAPI>(`${environment.API}api/delivery/add`,dataDerivery,{
-      headers:{'authorization': GlobalFunction.getCookie('Authorization'),}
+    return this.api.post<RespAPI>(`${environment.API}api/delivery/add`,dataDerivery,{headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+
+    withCredentials: true,
     })
   }
 }

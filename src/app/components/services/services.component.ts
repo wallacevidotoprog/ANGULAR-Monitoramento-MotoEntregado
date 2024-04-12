@@ -16,16 +16,18 @@ import {
 import { DeliveryService } from '../../service/delivery.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { NgToastService } from 'ng-angular-popup';
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule,RouterLink],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './services.component.html',
   styleUrl: './services.component.css',
 })
 export class ServicesComponent {
   @ViewChild('myalert') myalert!: ElementRef;
 
+  private tAlert = inject(NgToastService);
   msgAlert = new ALERT();
   loading: boolean = false;
   _alert: boolean = false;
@@ -43,7 +45,11 @@ export class ServicesComponent {
   private apiDelivery = inject(DeliveryService);
   send() {
     if (!this.deliveryForm.valid) {
-      this.SendMsgAlert(new ALERT('ERRO', 'Faltou preencher algo.'), 2);
+      this.tAlert.error({
+        detail: 'ERRO',
+        summary: 'Faltou preencher algo.',
+        duration: 5000,
+      });
       return;
     }
     this.loading = true;
@@ -73,14 +79,19 @@ export class ServicesComponent {
       (res) => {
         this.loading = false;
         this.deliveryForm.reset();
-        this.SendMsgAlert(
-          new ALERT('Sucesso', 'Registro cadastrado com sucesso.'),
-          0
-        );
+        this.tAlert.success({
+          detail: 'Sucesso',
+          summary: 'Registro cadastrado com sucesso.',
+          duration: 5000,
+        });
       },
       (error) => {
         this.loading = false;
-        this.SendMsgAlert(new ALERT('ERRO', error), 2);
+        this.tAlert.error({
+          detail: 'Erro ',
+          summary: JSON.stringify(error),
+          duration: 5000,
+        });
       }
     );
   }

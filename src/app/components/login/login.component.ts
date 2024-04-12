@@ -6,16 +6,19 @@ import { HttpClientModule } from '@angular/common/http';
 import { pipe, Subject, take, takeUntil } from 'rxjs';
 import { AlertComponent, StateAlert } from '../alert/alert.component';
 import { AlertService } from '../alert/alert.service';
+import { NgToastService } from 'ng-angular-popup';
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  imports: [FormsModule, HttpClientModule],
+  imports: [FormsModule, HttpClientModule,],
 })
 export class LoginComponent implements OnInit {
   private unsubscribe = new Subject<void>();
-  private dialogAlert = inject(AlertService)
+  private dialogAlert = inject(AlertService);
+  private tAlert = inject(NgToastService);
+
   ngOnInit(): void {
     this.canLoadin = false;
     this.loginService
@@ -31,7 +34,11 @@ export class LoginComponent implements OnInit {
         },
         (error) => {
           this.canLoadin = true;
-          //this.dialogAlert.OpenAlert('Erro ao Re-logar',StateAlert[StateAlert.info]);
+          this.tAlert.warning({
+            detail: 'Falhar de Autenticação',
+            summary: 'Você não esta autenticado. \nFaça o Login',
+            duration: 5000,
+          });
         },
         () => {
           console.log('finish');
@@ -45,8 +52,12 @@ export class LoginComponent implements OnInit {
 
   dataUser = new UserLogin();
 
-  onTeste(){
-    this.dialogAlert.OpenAlert('Erro ao Re-logar',StateAlert.info);
+  onTeste() {
+    this.tAlert.info({
+      detail: 'SUCCESS',
+      summary: ' AEE SEU PUTO',
+      duration: 5000,
+    });
   }
   Login() {
     this.canLoadin = false;
@@ -57,12 +68,27 @@ export class LoginComponent implements OnInit {
         (res) => {
           if (res.err) {
             this.canLoadin = true;
+            this.tAlert.error({
+              detail: 'Falhar ao Logar',
+              summary: 'Faça o Login com Usuário e Senha corretos',
+              duration: 5000,
+            });
             return;
           }
+          this.tAlert.success({
+            detail: 'Logado com Sucesso',
+            summary: 'Seja Bem Vindo',
+            duration: 5000,
+          });
           this.routerService.navigate(['']);
         },
         (error) => {
           this.canLoadin = true;
+          this.tAlert.error({
+            detail: 'Falhar ao Logar',
+            summary: 'Faça o Login com Usuário e Senha corretos',
+            duration: 5000,
+          });
         }
       );
   }
