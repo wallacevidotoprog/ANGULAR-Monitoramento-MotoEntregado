@@ -17,22 +17,21 @@ import { DeliveryService } from '../../service/delivery.service';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
+import { InputGenericComponent } from '../inputs/input-generic/input-generic.component';
+import { InputButtonGenericComponent } from '../inputs/input-button-generic/input-button-generic.component';
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, RouterLink],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, RouterLink,InputGenericComponent,InputButtonGenericComponent],
   templateUrl: './services.component.html',
   styleUrl: './services.component.css',
 })
 export class ServicesComponent {
-  @ViewChild('myalert') myalert!: ElementRef;
+  
+  private alerts = inject(NgToastService);
+  private apiDelivery = inject(DeliveryService);
 
-  private tAlert = inject(NgToastService);
-  msgAlert = new ALERT();
   loading: boolean = false;
-  _alert: boolean = false;
-
-  dateToday: any;
 
   deliveryForm = new FormGroup({
     date: new FormControl(this.getDateNow(), Validators.required),
@@ -42,10 +41,10 @@ export class ServicesComponent {
     isDerivery: new FormControl('', Validators.required),
   });
 
-  private apiDelivery = inject(DeliveryService);
-  send() {
+
+  send():void {
     if (!this.deliveryForm.valid) {
-      this.tAlert.error({
+      this.alerts.error({
         detail: 'ERRO',
         summary: 'Faltou preencher algo.',
         duration: 5000,
@@ -75,11 +74,12 @@ export class ServicesComponent {
         console.log('default');
         break;
     }
+
     this.apiDelivery.add(deliveryData).subscribe(
       (res) => {
         this.loading = false;
         this.deliveryForm.reset();
-        this.tAlert.success({
+        this.alerts.success({
           detail: 'Sucesso',
           summary: 'Registro cadastrado com sucesso.',
           duration: 5000,
@@ -87,36 +87,13 @@ export class ServicesComponent {
       },
       (error) => {
         this.loading = false;
-        this.tAlert.error({
+        this.alerts.error({
           detail: 'Erro ',
           summary: JSON.stringify(error),
           duration: 5000,
         });
       }
     );
-  }
-
-  SendMsgAlert(al: ALERT, _type: number) {
-    this._alert = true;
-    switch (_type) {
-      case 0: //sucess
-        al.n = 'green';
-        break;
-      case 1: //warn
-        al.n = 'yellow';
-        break;
-      case 2: //error
-        al.n = 'red';
-        break;
-
-      default:
-        al.n = 'darkcyan';
-        break;
-    }
-    this.msgAlert = al;
-    setTimeout(() => {
-      this._alert = false;
-    }, 5000);
   }
 
   getDateNow() {
@@ -160,15 +137,4 @@ export class DeliveryData {
   //   this.isIfood = isIfood;
   //   this.isManipulation = isManipulation;
   // }
-}
-
-export class ALERT {
-  alert: string | any;
-  msg: string | any;
-  n: string | any;
-  constructor(al: string = '', msg: string = '', n: string = '') {
-    this.alert = al;
-    this.msg = msg;
-    this.n = n;
-  }
 }

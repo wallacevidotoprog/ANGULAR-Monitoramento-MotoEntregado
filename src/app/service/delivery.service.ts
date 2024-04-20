@@ -29,6 +29,7 @@ export class DeliveryService {
     });
     return obj;
   }
+  
 
   add(dataDerivery: DeliveryData): Observable<RespAPI> {
     return this.api.post<RespAPI>(`${environment.API}api/delivery/add`,dataDerivery,{headers: {

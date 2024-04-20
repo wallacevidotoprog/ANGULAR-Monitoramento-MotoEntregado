@@ -5,6 +5,8 @@ import { HomepageComponent } from './components/homepage/homepage.component';
 import { PageNotFoundComponentComponent } from './components/page-not-found-component/page-not-found-component.component';
 import { AuthGuard } from './guards/auth-guard';
 import { ServicesComponent } from './components/services/services.component';
+import { MaintenanceComponent } from './components/maintenance/maintenance.component';
+import { ReportComponent } from './components/report/report.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, title: 'login' },
@@ -17,8 +19,17 @@ export const routes: Routes = [
       {
         path: 'services',
         component: ServicesComponent,
-        title: 'Services',
-        canActivate: [AuthGuard],
+        title: 'Entraga'
+      },
+      {
+        path: 'maintenance',
+        component: MaintenanceComponent,
+        title: 'Manutenção'
+      },
+      {
+        path: 'report',
+        component: ReportComponent,
+        title: 'Relatórios'
       },
     ],
   },

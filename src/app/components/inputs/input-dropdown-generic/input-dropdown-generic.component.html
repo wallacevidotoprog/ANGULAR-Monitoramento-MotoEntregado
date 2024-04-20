@@ -1,0 +1,8 @@
+<div class="container">
+  <label [attr.for]="id" class="text">{{ label }}</label>
+  <select name="dropdown" [id]="id">
+  @for (item of arr; track $index) {
+  <option value="item">{{item}}</option>
+  }
+  </select>
+</div>
