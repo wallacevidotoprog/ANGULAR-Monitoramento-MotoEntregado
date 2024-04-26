@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
+import { MaintenanceService } from './../../service/maintenance.service';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -12,6 +13,7 @@ import { NgToastService } from 'ng-angular-popup';
 import { InputGenericComponent } from '../inputs/input-generic/input-generic.component';
 import { InputButtonGenericComponent } from '../inputs/input-button-generic/input-button-generic.component';
 import { InputDropdownGenericComponent } from '../inputs/input-dropdown-generic/input-dropdown-generic.component';
+import { IndexersService } from '../../service/indexers.service';
 
 @Component({
   selector: 'app-maintenance',
@@ -28,36 +30,70 @@ import { InputDropdownGenericComponent } from '../inputs/input-dropdown-generic/
   templateUrl: './maintenance.component.html',
   styleUrl: './maintenance.component.css',
 })
-export class MaintenanceComponent {
+export class MaintenanceComponent implements OnInit {
+  private alerts = inject(NgToastService);
+  protected maintenanceService = inject(MaintenanceService);
+  protected indrs = inject(IndexersService);
+  protected dataDP!: never[];
   protected load = false;
+  protected isDate!: string;
+
+  ngOnInit(): void {
+    this.isDate = this.indrs.getDateNow();
+    this.maintenanceService.getDropDown().subscribe(
+      (data) => {
+        this.dataDP = data.data;
+      },
+      (_err) => {}
+    );
+  }
   maintenance = new FormGroup({
-    date: new FormControl(this.getDateNow()),
-    plate: new FormControl('',Validators.required),
-    km: new FormControl(),
-    value: new FormControl(),
-    type: new FormControl(),
-    obs: new FormControl(),
+    date: new FormControl('', Validators.required),
+    plate: new FormControl('', Validators.required),
+    km: new FormControl('', Validators.required),
+    value: new FormControl('', Validators.required),
+    type: new FormControl('', Validators.required),
+    obs: new FormControl('', Validators.required),
   });
   send(): void {
-    console.log(this.maintenance.value.date);
+    if (!this.maintenance.valid) {
+      this.alerts.error({
+        detail: 'ERRO',
+        summary: 'Faltou preencher algo.',
+        duration: 5000,
+      });
+      return;
+    }
     this.load = true;
-    setTimeout(() => {
-      this.load = false;
-    }, 5000);
-  }
 
-  getDateNow() {
-    let today = new Date();
-    let date =
-      today.getFullYear() +
-      '-' +
-      (today.getMonth() + 1).toString().padStart(2, '0') +
-      '-' +
-      today.getDate().toString().padStart(2, '0');
-    let time =
-      today.getHours().toString().padStart(2, '0') +
-      ':' +
-      today.getMinutes().toString().padStart(2, '0');
-    return date + 'T' + time;
+    this.maintenanceService
+      .add({
+        date: this.maintenance.value.date,
+        km: this.maintenance.value.km,
+        value: this.maintenance.value.value,
+        type: this.maintenance.value.type,
+        plate: this.maintenance.value.plate,
+        obs: this.maintenance.value.obs,
+      })
+      .subscribe(
+        (res) => {
+          this.load = false;
+          this.maintenance.reset();
+          this.isDate = this.indrs.getDateNow();
+          this.alerts.success({
+            detail: 'Sucesso',
+            summary: 'Registro cadastrado com sucesso.',
+            duration: 5000,
+          });
+        },
+        (err) => {
+          this.load = false;
+          this.alerts.error({
+            detail: 'Erro ',
+            summary: JSON.stringify(err),
+            duration: 5000,
+          });
+        }
+      );
   }
 }

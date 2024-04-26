@@ -4,17 +4,16 @@
       type="datetime-local"
       label="DATE"
       id="date"
-      isValue="isDate"
+      [(ngModel)]="isDate"
       formControlName="date"
     />
-
     <app-input-generic
-      type="text"
-      label="PLACA"
-      id="placa"
-      ph="GDI1A75"
-      formControlName="plate"
-    />
+    type="number"
+    label="VALOR"
+    id="value"
+    ph="R$ 59,90"
+    formControlName="value"
+  />
     <app-input-generic
       type="number"
       label="KILOMETRAGEM"
@@ -23,13 +22,13 @@
       formControlName="km"
     />
     <app-input-generic
-      type="number"
-      label="VALOR"
-      id="value"
-      ph="59,90"
-      formControlName="value"
+      type="text"
+      label="PLACA"
+      id="placa"
+      ph="GDI1A75"
+      formControlName="plate"
     />
-    <app-input-dropdown-generic />
+    <app-input-dropdown-generic [datas]="dataDP" formControlName="type"/>
     <app-input-generic
       type="text"
       label="OBSERVAÇÃO"
@@ -38,7 +37,6 @@
       formControlName="obs"
     />
 
-    <app-input-button-generic [loading]="load" ></app-input-button-generic>
-    <button type="submit" [disabled]="!maintenance.valid">Submit</button>
+    <app-input-button-generic [loading]="load" [isDisable]="!maintenance.valid"></app-input-button-generic>
   </form>
 </div>

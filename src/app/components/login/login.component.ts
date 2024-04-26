@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { LoginService, RespAPI } from '../../service/login.service';
+import { LoginService } from '../../service/login.service';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { pipe, Subject, take, takeUntil } from 'rxjs';
@@ -12,13 +12,15 @@ import { NgToastService } from 'ng-angular-popup';
   standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  imports: [FormsModule, HttpClientModule,],
+  imports: [FormsModule, HttpClientModule],
 })
 export class LoginComponent implements OnInit {
-  private unsubscribe = new Subject<void>();
-  private dialogAlert = inject(AlertService);
-  private tAlert = inject(NgToastService);
-
+  protected unsubscribe = new Subject<void>();
+  protected tAlert = inject(NgToastService);
+  protected routerService = inject(Router);
+  protected loginService = inject(LoginService);
+  protected user!: string;
+  protected pass!: string;
   ngOnInit(): void {
     this.canLoadin = false;
     this.loginService
@@ -45,24 +47,13 @@ export class LoginComponent implements OnInit {
         }
       );
   }
-  private routerService = inject(Router);
-  private loginService = inject(LoginService);
 
   canLoadin: boolean = true;
 
-  dataUser = new UserLogin();
-
-  onTeste() {
-    this.tAlert.info({
-      detail: 'SUCCESS',
-      summary: ' AEE SEU PUTO',
-      duration: 5000,
-    });
-  }
   Login() {
     this.canLoadin = false;
     this.loginService
-      .eLogin(this.dataUser)
+      .eLogin({ user: this.user, pass: this.pass })
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(
         (res) => {
@@ -92,8 +83,4 @@ export class LoginComponent implements OnInit {
         }
       );
   }
-}
-export class UserLogin {
-  user!: string;
-  pass!: string;
 }

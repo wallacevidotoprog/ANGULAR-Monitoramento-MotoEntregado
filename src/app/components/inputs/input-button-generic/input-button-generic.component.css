@@ -1,8 +1,18 @@
-
-.button-input {
+.button-input-disable{
+  color: white;
+  background-color: #454c5f;
+  --ring-color: #93c5fd;
+  cursor: not-allowed;
+}
+.button-input-enable{
   color: white;
   background-color: #1d4ed8;
   --ring-color: #93c5fd;
+  cursor: wait;
+  cursor: pointer;
+}
+.button-input {
+
   font-weight: 500;
   border-radius: 0.5rem;
   font-size: 1rem;
@@ -12,12 +22,14 @@
   display: inline-flex;
   align-items: center;
   border: none;
-  cursor: pointer;
   flex-direction: column;
   width: 100%;
 }
 
-.button-input:hover {
+.button-input-disable:hover {
+  background-color: #631c1c;
+}
+.button-input-enable:hover {
   background-color: #1e40af;
 }
 

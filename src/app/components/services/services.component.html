@@ -9,6 +9,7 @@
       type="datetime-local"
       label="DATE"
       id="date"
+      [(ngModel)]="isDate"
       formControlName="date"
     ></app-input-generic>
     <app-input-generic
@@ -65,7 +66,7 @@
         <span class="name">Manipulação</span>
       </label>
     </div>
-    <app-input-button-generic [loading]="loading"></app-input-button-generic>
+    <app-input-button-generic [loading]="loading" [isDisable]="!deliveryForm.valid"></app-input-button-generic>
 
   </form>
 </div>

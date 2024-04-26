@@ -1,4 +1,4 @@
-<button type="submit" value="submit" class="button-input" [disabled]="loading">
+<button type="submit" value="submit" [ngClass]="{'button-input-enable': !isDisable,'button-input-disable': isDisable}"  class="button-input" [disabled]="isDisable">
   @if (loading) {
   <svg
     aria-hidden="true"
