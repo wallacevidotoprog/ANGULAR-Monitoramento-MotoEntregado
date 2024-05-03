@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class IndexersService {
-
   getDateNow() {
     let today = new Date();
     let date =
@@ -19,7 +18,6 @@ export class IndexersService {
       today.getMinutes().toString().padStart(2, '0');
     return date + 'T' + time;
   }
-
 }
 export interface IMaintenanceData {
   date: Date | any;
@@ -32,6 +30,7 @@ export interface IMaintenanceData {
 export interface IRespAPI {
   err: boolean | any;
   menssage: string | any;
+  data: any;
 }
 
 export interface IUserLogin {
@@ -40,6 +39,17 @@ export interface IUserLogin {
 }
 export interface IDeliveryData {
   date: Date | any;
+  value: number | any;
+  km: number | any;
+  router: string | any;
+  isRate: boolean;
+  isIfood: boolean;
+  isManipulation: boolean;
+}
+export interface IDeliveryDataRes {
+  id_delivery: number | any;
+  id_deliveryman: string | any;
+  date: string | any;
   value: number | any;
   km: number | any;
   router: string | any;

@@ -45,7 +45,7 @@ export class MaintenanceComponent implements OnInit {
         this.dataDP = data.data;
       },
       (_err) => {}
-    );
+    ); 
   }
   maintenance = new FormGroup({
     date: new FormControl('', Validators.required),

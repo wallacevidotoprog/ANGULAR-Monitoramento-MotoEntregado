@@ -29,5 +29,14 @@ export class LoginService {
       withCredentials: true,
     });
   }
+  eLogout():Observable<IRespAPI>{
+    return this.api.post<IRespAPI>(`${environment.API}api/logout`,{
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    })
+  }
 }
 
